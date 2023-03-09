@@ -7,6 +7,7 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/util/grand"
+	v1 "yx-blog/api/v1"
 )
 
 // Add 添加用户
@@ -55,6 +56,58 @@ func Delete(ctx context.Context, userId int64) (err error) {
 	return
 }
 
+// UpdatePassword 修改用户密码
+func UpdatePassword(ctx context.Context, userId int64, password string) (err error) {
+	db := g.Model("users")
+	//随机生成一个盐
+	salt := grand.S(6)
+	//密码加盐
+	password = password + salt
+	//md5加密
+	password = gmd5.MustEncryptString(password)
+	//获取当前时间
+	updateTime := gtime.Now().String()
+	//修改数据
+	_, err = db.Data(g.Map{
+		"password":    password,
+		"salt":        salt,
+		"update_time": updateTime,
+	}).Where("id", userId).Update()
+	//判断是否有错误
+	if err != nil {
+		//打印错误
+		g.Log().Error(ctx, err)
+	}
+	return
+}
+
+// CheckPassword 验证密码是否正确
+func CheckPassword(ctx context.Context, userId int64, password string) (isRight bool, err error) {
+	db := g.Model("users")
+	isRight = false
+	//查询数据
+	result, err := db.Where("id", userId).One()
+	//判断是否有错误
+	if err != nil {
+		//打印错误
+		g.Log().Error(ctx, err)
+	}
+	//判断是否有数据
+	if result != nil {
+		//获取盐
+		salt := result["salt"]
+		//密码加盐
+		password = password + salt.String()
+		//md5加密
+		password = gmd5.MustEncryptString(password)
+		//判断密码是否正确
+		if password == result["password"].String() {
+			isRight = true
+		}
+	}
+	return
+}
+
 // Check 根据名字查询是否存在用户
 func Check(ctx context.Context, userName string) (isHave bool, err error) {
 	db := g.Model("users")
@@ -90,6 +143,42 @@ func CheckUserById(ctx context.Context, userId int64) (isHave bool, err error) {
 		isHave = true
 	} else {
 		isHave = false
+	}
+	return
+}
+
+// List 用户列表
+func List(ctx context.Context, page int, pageSize int) (list []v1.UserInfo, err error) {
+
+	db := g.Model("users")
+	//查询数据
+	result, err := db.Page(page, pageSize).All()
+	//判断是否有错误
+	if err != nil {
+		//打印错误
+		g.Log().Error(ctx, err)
+	}
+	//判断是否有数据
+	if result != nil {
+		//循环遍历数据
+		for _, v := range result {
+			var isBanned bool
+			if v["is_banned"].String() == "1" {
+				isBanned = true
+			} else {
+				isBanned = false
+			}
+			//获取数据
+			list = append(list, v1.UserInfo{
+				UserId:     v["id"].Int64(),
+				UserName:   v["username"].String(),
+				Email:      v["email"].String(),
+				CreateTime: v["create_time"].String(),
+				UpdateTime: v["update_time"].String(),
+				IsBanned:   isBanned,
+			})
+		}
+
 	}
 	return
 }
