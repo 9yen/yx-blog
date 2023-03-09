@@ -9,12 +9,9 @@ import (
 	"github.com/gogf/gf/v2/util/grand"
 )
 
-var (
-	Db = g.Model("users")
-)
-
 // Add 添加用户
 func Add(ctx context.Context, userName string, password string) (id int64, createTime string) {
+	db := g.Model("users")
 	//随机生成一个盐
 	salt := grand.S(6)
 	//密码加盐
@@ -26,7 +23,7 @@ func Add(ctx context.Context, userName string, password string) (id int64, creat
 	createTime = gtime.Now().String()
 
 	//插入数据
-	result, err := Db.Insert(g.Map{
+	result, err := db.Insert(g.Map{
 		"user_name":   userName,
 		"password":    password,
 		"salt":        salt,
@@ -45,11 +42,26 @@ func Add(ctx context.Context, userName string, password string) (id int64, creat
 	return
 }
 
-// Check 查询是否存在用户
+// Delete 删除用户
+func Delete(ctx context.Context, userId int64) (err error) {
+	db := g.Model("users")
+	//删除数据
+	_, err = db.Where("id", userId).Delete()
+	//判断是否有错误
+	if err != nil {
+		//打印错误
+		g.Log().Error(ctx, err)
+	}
+	return
+}
+
+// Check 根据名字查询是否存在用户
 func Check(ctx context.Context, userName string) (isHave bool, err error) {
+	db := g.Model("users")
 	isHave = false
 	//查询数据
-	result, err := Db.Where("username", userName).One()
+	result, err := db.Where("username", userName).One()
+
 	//判断是否有错误
 	if err != nil {
 		//打印错误
@@ -58,6 +70,26 @@ func Check(ctx context.Context, userName string) (isHave bool, err error) {
 	//判断是否有数据
 	if result != nil {
 		isHave = true
+	}
+	return
+}
+
+// CheckUserById 根据id查询用户
+func CheckUserById(ctx context.Context, userId int64) (isHave bool, err error) {
+	db := g.Model("users")
+	//查询数据
+	result, err := db.Where("id", userId).One()
+	//判断是否有错误
+	if err != nil {
+		//打印错误
+		g.Log().Error(ctx, err)
+	}
+
+	//判断是否有数据
+	if result != nil {
+		isHave = true
+	} else {
+		isHave = false
 	}
 	return
 }
