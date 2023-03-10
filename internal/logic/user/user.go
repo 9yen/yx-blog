@@ -182,3 +182,34 @@ func List(ctx context.Context, page int, pageSize int) (list []v1.UserInfo, err 
 	}
 	return
 }
+
+// GetUserInfo	获取用户信息
+func GetUserInfo(ctx context.Context, userId int64) (userInfo v1.UserInfo, err error) {
+	db := g.Model("users")
+	//查询数据
+	result, err := db.Where("id", userId).One()
+	//判断是否有错误
+	if err != nil {
+		//打印错误
+		g.Log().Error(ctx, err)
+	}
+	//判断是否有数据
+	if result != nil {
+		var isBanned bool
+		if result["is_banned"].String() == "1" {
+			isBanned = true
+		} else {
+			isBanned = false
+		}
+		//获取数据
+		userInfo = v1.UserInfo{
+			UserId:     result["id"].Int64(),
+			UserName:   result["username"].String(),
+			Email:      result["email"].String(),
+			CreateTime: result["create_time"].String(),
+			UpdateTime: result["update_time"].String(),
+			IsBanned:   isBanned,
+		}
+	}
+	return
+}

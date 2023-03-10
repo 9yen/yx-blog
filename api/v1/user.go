@@ -57,3 +57,18 @@ type UserInfo struct {
 	CreateTime string `json:"create_time" example:"2021-01-01 00:00:00" format:"string" description:"创建时间"`
 	UpdateTime string `json:"update_time" example:"2021-01-01 00:00:00" format:"string" description:"更新时间"`
 }
+
+// UserInfoReq 获取单个用户信息
+type UserInfoReq struct {
+	g.Meta `path:"/user/info" tags:"用户" method:"post" summary:"获取单个用户信息"`
+	UserId int64 `json:"user_id" example:"1" format:"int64" description:"用户ID"`
+}
+
+type UserInfoRes struct {
+	UserId     int64  `json:"user_id" example:"1" format:"int64" description:"用户ID"`
+	UserName   string `json:"user_name" example:"admin" format:"string" description:"用户名"`
+	Email      string `json:"email" example:"email" format:"string" description:"邮箱"`
+	IsBanned   bool   `json:"is_banned" example:"false" format:"bool" description:"是否禁用"`
+	CreateTime string `json:"create_time" example:"2021-01-01 00:00:00" format:"string" description:"创建时间"`
+	UpdateTime string `json:"update_time" example:"2021-01-01 00:00:00" format:"string" description:"更新时间"`
+}

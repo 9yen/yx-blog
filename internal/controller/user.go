@@ -111,3 +111,19 @@ func (c *cUser) UserList(ctx context.Context, req *v1.UserListReq) (res *v1.User
 	}
 	return res, err
 }
+
+// GetUserInfo 获取单个用户信息
+func (c *cUser) GetUserInfo(ctx context.Context, req *v1.UserInfoReq) (res *v1.UserInfoRes, err error) {
+	//接收参数
+	userId := req.UserId
+	//查询用户信息
+	info, err := user.GetUserInfo(ctx, userId)
+	//返回数据
+	res = &v1.UserInfoRes{
+		UserId:     info.UserId,
+		UserName:   info.UserName,
+		IsBanned:   info.IsBanned,
+		CreateTime: info.CreateTime,
+	}
+	return res, err
+}
