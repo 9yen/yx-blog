@@ -73,3 +73,38 @@ func (c *cArticle) DeleteArticle(ctx context.Context, req *v1.DeleteArticleReq) 
 	}
 	return res, err
 }
+
+// UpdateArticle 修改文章
+func (c *cArticle) UpdateArticle(ctx context.Context, req *v1.UpdateArticleReq) (res *v1.UpdateArticleRes, err error) {
+	//接收myKey
+	myKey := req.MyKey
+	//判断myKey是否正确
+	if myKey != consts.MyKey {
+		err = gerror.NewCode(gcode.New(consts.ErrMyKey, consts.ErrMyKeyMsg, nil))
+		return res, err
+	}
+
+	//接收参数
+	articleId := req.ArticleId
+	title := req.Title
+	content := req.Content
+
+	// check article exist
+	exist := article.Check(ctx, articleId)
+
+	if !exist {
+		err = gerror.NewCode(gcode.New(consts.ErrArticleNotExist, consts.ErrArticleNotExistMsg, nil))
+		return res, err
+	}
+
+	err, updateTime := article.Update(ctx, articleId, title, content)
+	if err != nil {
+		return nil, err
+	}
+	//返回数据
+	res = &v1.UpdateArticleRes{
+		ArticleId:  articleId,
+		UpdateTime: updateTime,
+	}
+	return res, err
+}

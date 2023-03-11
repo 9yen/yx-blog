@@ -71,13 +71,15 @@ func Delete(ctx context.Context, id int64) (err error) {
 }
 
 // Update is the logic method for updating article
-func Update(ctx context.Context, id int64, title string, content string) (err error) {
+func Update(ctx context.Context, id int64, title string, content string) (err error, updateTime string) {
 	db := g.Model("articles")
+	updateTime = gtime.Now().String()
+
 	//更新数据
 	_, err = db.Data(g.Map{
 		"title":       title,
 		"content":     content,
-		"update_time": gtime.Now().String(),
+		"update_time": updateTime,
 	}).Where("id", id).Update()
 	//判断是否有错误
 	if err != nil {

@@ -31,3 +31,16 @@ type DeleteArticleReq struct {
 type DeleteArticleRes struct {
 	ArticleId int64 `json:"articleId"`
 }
+
+type UpdateArticleReq struct {
+	g.Meta    `path:"/article/update" method:"post" summary:"更新文章" tags:"文章"`
+	ArticleId int64  `p:"articleId"  v:"required#文章ID不能为空"`
+	Title     string `p:"title"  v:"required#文章标题不能为空"`
+	Content   string `p:"content"  v:"required#文章内容不能为空"`
+	MyKey     string `p:"myKey"  v:"required#myKey不能为空"`
+}
+
+type UpdateArticleRes struct {
+	ArticleId  int64  `json:"articleId"`
+	UpdateTime string `json:"updateTime"`
+}
