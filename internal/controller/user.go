@@ -18,6 +18,14 @@ type cUser struct {
 
 // AddUser 添加用户
 func (c *cUser) AddUser(ctx context.Context, req *v1.AddUserReq) (res *v1.AddUserRes, err error) {
+	//接收myKey
+	myKey := req.MyKey
+	//判断myKey是否正确
+	if myKey != consts.MyKey {
+		err = gerror.NewCode(gcode.New(consts.ErrMyKey, consts.ErrMyKeyMsg, nil))
+		return res, err
+	}
+
 	//接收参数
 	userName := req.UserName
 	//查询是否存在用户
@@ -42,9 +50,13 @@ func (c *cUser) AddUser(ctx context.Context, req *v1.AddUserReq) (res *v1.AddUse
 
 // DeleteUser 删除用户
 func (c *cUser) DeleteUser(ctx context.Context, req *v1.DeleteUserReq) (res *v1.DeleteUserRes, err error) {
-	//暂时关闭此接口
-	err = gerror.NewCode(gcode.New(consts.ErrCloseThisInterface, consts.ErrCloseThisInterfaceMsg, nil))
-	return res, err
+	//接收myKey
+	myKey := req.MyKey
+	//判断myKey是否正确
+	if myKey != consts.MyKey {
+		err = gerror.NewCode(gcode.New(consts.ErrMyKey, consts.ErrMyKeyMsg, nil))
+		return res, err
+	}
 
 	//接收参数
 	userId := req.UserId
@@ -67,6 +79,14 @@ func (c *cUser) DeleteUser(ctx context.Context, req *v1.DeleteUserReq) (res *v1.
 
 // UpdatePassword 修改用户密码
 func (c *cUser) UpdatePassword(ctx context.Context, req *v1.UpdatePasswordReq) (res *v1.UpdatePasswordRes, err error) {
+	//接收myKey
+	myKey := req.MyKey
+	//判断myKey是否正确
+	if myKey != consts.MyKey {
+		err = gerror.NewCode(gcode.New(consts.ErrMyKey, consts.ErrMyKeyMsg, nil))
+		return res, err
+	}
+
 	//接收参数
 	userId := req.UserId
 	oldPassword := req.OldPassword
@@ -100,6 +120,15 @@ func (c *cUser) UpdatePassword(ctx context.Context, req *v1.UpdatePasswordReq) (
 
 // UserList 用户列表
 func (c *cUser) UserList(ctx context.Context, req *v1.UserListReq) (res *v1.UserListRes, err error) {
+
+	//接收myKey
+	myKey := req.MyKey
+	//判断myKey是否正确
+	if myKey != consts.MyKey {
+		err = gerror.NewCode(gcode.New(consts.ErrMyKey, consts.ErrMyKeyMsg, nil))
+		return res, err
+	}
+
 	//接收参数
 	page := req.Page
 	limit := req.Limit
@@ -114,6 +143,15 @@ func (c *cUser) UserList(ctx context.Context, req *v1.UserListReq) (res *v1.User
 
 // GetUserInfo 获取单个用户信息
 func (c *cUser) GetUserInfo(ctx context.Context, req *v1.UserInfoReq) (res *v1.UserInfoRes, err error) {
+
+	//接收myKey
+	myKey := req.MyKey
+	//判断myKey是否正确
+	if myKey != consts.MyKey {
+		err = gerror.NewCode(gcode.New(consts.ErrMyKey, consts.ErrMyKeyMsg, nil))
+		return res, err
+	}
+
 	//接收参数
 	userId := req.UserId
 	//查询用户信息
