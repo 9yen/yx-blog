@@ -31,8 +31,9 @@ var (
 			s.Group("/", func(group *ghttp.RouterGroup) {
 				group.Middleware(ghttp.MiddlewareHandlerResponse)
 				group.Bind(
-					controller.Hello,
+					//controller.Hello,
 					controller.User,
+					controller.Article,
 				)
 			})
 			s.Run()

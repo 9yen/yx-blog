@@ -18,6 +18,10 @@ const (
 	ErrMyKey    = 10004
 	ErrMyKeyMsg = "myKey错误"
 
+	//ErrArticleNotExist 10005 文章不存在
+	ErrArticleNotExist    = 10005
+	ErrArticleNotExistMsg = "文章不存在"
+
 	// ErrCloseThisInterface 10007 暂时关闭此接口
 	ErrCloseThisInterface    = 10007
 	ErrCloseThisInterfaceMsg = "暂时关闭此接口"
