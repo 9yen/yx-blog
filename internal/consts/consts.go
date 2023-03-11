@@ -14,6 +14,10 @@ const (
 	ErrUserPasswordError    = 10003
 	ErrUserPasswordErrorMsg = "用户密码错误"
 
+	// ErrMyKey 10004 myKey错误
+	ErrMyKey    = 10004
+	ErrMyKeyMsg = "myKey错误"
+
 	// ErrCloseThisInterface 10007 暂时关闭此接口
 	ErrCloseThisInterface    = 10007
 	ErrCloseThisInterfaceMsg = "暂时关闭此接口"
