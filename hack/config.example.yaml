@@ -1,0 +1,6 @@
+gfcli:
+  database:
+    default:
+      - link: "mysql:your_user_name:your_password@tcp(127.0.0.1:3306)/your_db"
+        prefix: "blog_"
+        debug: false

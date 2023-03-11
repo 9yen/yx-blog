@@ -2,3 +2,8 @@
 # CLI tool, only in development environment.
 # https://goframe.org/pages/viewpage.action?pageId=3673173
 gfcli:
+  database:
+    default:
+      - link: "mysql:root:root@tcp(127.0.0.1:3306)/yx_blog"
+        prefix: "blog_"
+        debug: false
