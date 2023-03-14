@@ -5,7 +5,7 @@ import (
 
 	"github.com/gogf/gf/v2/frame/g"
 
-	"yx-blog/api/v1"
+	"demo/api/v1"
 )
 
 var (

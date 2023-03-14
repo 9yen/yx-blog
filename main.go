@@ -1,11 +1,11 @@
 package main
 
 import (
-	_ "yx-blog/internal/packed"
+	_ "demo/internal/packed"
 
 	"github.com/gogf/gf/v2/os/gctx"
 
-	"yx-blog/internal/cmd"
+	"demo/internal/cmd"
 )
 
 func main() {
